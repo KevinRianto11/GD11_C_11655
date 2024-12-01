@@ -24,6 +24,29 @@ const images = [
     },
 ];
 
+const cardData = [
+    {
+        title: "Fresh Bread",
+        description: "Our signature freshly baked bread made with premium ingredients",
+        image: imgBakery1,
+    },
+    {
+        title: "Sweet Pastries",
+        description: "Delightful selection of pastries perfect for any occasion",
+        image: imgBakery2,
+    },
+    {
+        title: "Special Cakes",
+        description: "Custom-made cakes for celebrations and special moments",
+        image: imgBakery3,
+    },
+    {
+        title: "Artisan Selection",
+        description: "Handcrafted treats made by our expert bakers",
+        image: imgFeaturette1,
+    },
+];
+
 const HomePage = () => {
     return (
         <>
@@ -42,10 +65,47 @@ const HomePage = () => {
                         </p>
                     </Col>
                     <Col md={5}>
-                        <img src = {imgFeaturette1} className="img-fluid mx-auto rounded-shadow" role="img" aria-label="Gambar featurette 1" />
+                        <img src={imgFeaturette1} className="img-fluid mx-auto rounded-shadow" role="img" aria-label="Gambar featurette 1" />
                     </Col>
                 </Row>
                 <hr className="mt-5 mb-5"/>
+
+                {cardData.map((card, index) => (
+                    <Row key={index} className="mb-5">
+                        {index % 2 === 0 ? (
+                            <>
+                                <Col md={7}>
+                                    <h2 className="fw-normal">{card.title}</h2>
+                                    <p className="lead">{card.description}</p>
+                                </Col>
+                                <Col md={5}>
+                                    <img 
+                                        src={card.image} 
+                                        className="img-fluid mx-auto rounded-shadow" 
+                                        role="img" 
+                                        aria-label={card.title} 
+                                    />
+                                </Col>
+                            </>
+                        ) : (
+                            <>
+                                <Col md={5}>
+                                    <img 
+                                        src={card.image} 
+                                        className="img-fluid mx-auto rounded-shadow" 
+                                        role="img" 
+                                        aria-label={card.title} 
+                                    />
+                                </Col>
+                                <Col md={7}>
+                                    <h2 className="fw-normal">{card.title}</h2>
+                                    <p className="lead">{card.description}</p>
+                                </Col>
+                            </>
+                        )}
+                        {index !== cardData.length - 1 && <hr className="mt-5 mb-5"/>}
+                    </Row>
+                ))}
             </Container>
         </>
     );

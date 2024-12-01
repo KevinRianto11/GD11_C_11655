@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FloatingLabel, Button, Alert } from "react-bootstrap";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 const FormLogin = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ username: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,6 +36,10 @@ const FormLogin = () => {
     }
   };
 
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: "700px", margin: "auto" }}>
       <Alert variant="info">
@@ -42,8 +48,27 @@ const FormLogin = () => {
       <FloatingLabel controlId="floatingInput" label="Username" className="mb-3">
         <Form.Control type="text" placeholder="name@example.com" name="username" onChange={handleChange} />
       </FloatingLabel>
-      <FloatingLabel controlId="floatingPassword" label="Password">
-        <Form.Control type="password" placeholder="Password" name="password" onChange={handleChange} autoComplete="off" />
+      <FloatingLabel controlId="floatingPassword" label="Password" className="position-relative">
+        <Form.Control 
+          type={showPassword ? "text" : "password"} 
+          placeholder="Password" 
+          name="password" 
+          onChange={handleChange} 
+          autoComplete="off" 
+        />
+        <div 
+          onClick={togglePassword}
+          style={{
+            position: "absolute",
+            right: "1rem",
+            top: "50%",
+            transform: "translateY(-50%)",
+            cursor: "pointer",
+            zIndex: 2
+          }}
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </div>
       </FloatingLabel>
       <Button variant="primary" type="submit" className="mt-3 w-100">
         Login
