@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Toaster, toast } from "sonner";
 
-const ReservationCard = ({ namaPemesan, jumlahOrang, tanggalWaktu, status, nomorMeja, onEdit, onDelete }) => {
+const ReservationCard = ({ namaPemesan, jumlahOrang, tanggalWaktu, status, nomorMeja, abjad, onEdit, onDelete }) => {
     const getStatusBadgeClass = (status) => {
         switch (status) {
             case "Pending":
@@ -16,6 +16,19 @@ const ReservationCard = ({ namaPemesan, jumlahOrang, tanggalWaktu, status, nomor
                 return "bg-danger";
             default:
                 return "bg-secondary";
+        }
+    };
+
+    const getTableNumber = (status, nomorMeja) => {
+        switch (status) {
+            case "Pending":
+                return "Menunggu Konfirmasi";
+            case "Confirmed":
+                return `${nomorMeja} ${abjad}`;
+            case "Cancelled":
+                return "Reservasi Dibatalkan";
+            default:
+                return "Menunggu Konfirmasi";
         }
     };
 
@@ -36,7 +49,7 @@ const ReservationCard = ({ namaPemesan, jumlahOrang, tanggalWaktu, status, nomor
                 </div>
                 
                 <div className="border-bottom pb-2 mt-2">
-                    <strong>Nomor Meja </strong>{nomorMeja}<br />
+                    <strong>Nomor Meja </strong>{getTableNumber(status, nomorMeja)}<br />
                 </div>
                 
 
@@ -170,7 +183,7 @@ const DashboardPage = () => {
             </Row>
 
             <h2 className="mb-3">Daftar Reservasi Meja</h2>
-            <p>Saat ini terdapat {reservations.length} reservasi meja.</p>
+            <p>Saat ini terdapat <strong>{reservations.length}</strong> reservasi meja.</p>
 
             <Button variant="success" onClick={handleShow} className="mb-3 d-flex align-items-center gap-2">
                 <FontAwesomeIcon icon={faPlus} /> Tambah Reservasi Meja
@@ -185,6 +198,7 @@ const DashboardPage = () => {
                             tanggalWaktu={reservation.tanggalWaktu}
                             status={reservation.status}
                             nomorMeja={reservation.status === "Confirmed" ? reservation.nomorMeja : "Menunggu Konfirmasi"}
+                            abjad={reservation.abjad}
                             onEdit={() => handleEdit(reservation)}
                             onDelete={() => handleDelete(reservation.id, reservation.namaPemesan)}
                         />
